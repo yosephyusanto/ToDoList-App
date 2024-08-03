@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>Yoseph's To Do List</h1>
+  </header>
+
+  <form>
+    <input class="input-todo"  type="text" placeholder="Input">
+    <button class="btn-submit-todo" type="submit">
+      <i class="fa-regular fa-square-plus"></i>
+    </button>
+    <div class="dropdown">
+      <select name="todos" class="filter">
+        <option value="All">All</option>
+        <option value="Undone">Undone</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="todo-container">
+    <ul class="todo-list"></ul> 
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<!-- Jangan beri enter/spasi/teks apapun di dalam tag <ul></ul> karena
+ akan membuat NodeList mengandung teks sehingga todo.classList.contains("")
+ akan error -->
+<!-- <li class="todo-item">
+  <p class="todo-content">Makan</p>
+  <button class="check-btn"><i class="fa-solid fa-check"></i></button>
+  <button class="trash-btn"><i class="fa-solid fa-trash"></i></button>
+</li> -->

@@ -1,0 +1,170 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: linear-gradient( 120deg,rgb(89, 99, 210), rgb(11, 163, 194));
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+}
+
+header{
+    font-size: 1.5rem;
+}
+
+header h1{
+    text-align: center;
+    margin: 50px 0;
+    color:white;
+    font-weight: 600;
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+}
+
+.input-todo,
+.btn-submit-todo,
+.filter{
+    padding: 0.7rem 1rem;
+    font-size: 1.5rem;
+    color: rgb(11, 163, 194);
+    border: none;
+}
+
+.input-todo{
+    border-radius: 5px 0 0 5px;
+}
+
+.input-todo::placeholder{
+    color: rgb(11, 163, 194);
+}
+
+.input-todo:focus{
+    outline: none;
+}
+
+.btn-submit-todo{
+    cursor: pointer;
+    background-color: white;
+    border-radius: 0 5px 5px 0px;
+}
+
+.btn-submit-todo:hover{
+    background-color: rgb(11, 163, 194);
+    color: white;
+}
+
+
+.dropdown{
+    margin-left: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dropdown::after{
+    content: "\25BC"; 
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgb(11, 163, 194);
+    font-size: 1.25rem;
+    transition: 0.3s all ease;
+}
+
+.dropdown:hover::after{
+    background-color: rgb(11, 163, 194);
+    color: white;
+    padding: 1rem 0.5rem;
+    right: 0;
+}
+
+
+.filter{
+    padding-right: 80px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+/* Hide default arrow*/
+select{
+    appearance: none; /* Standard */
+    -webkit-appearance: none; /* Safari and Chrome */
+    -moz-appearance: none; /* Firefox */
+    background: none; /* Remove default background */
+    position: relative; /* Required for pseudo-element */
+    padding-right: 2rem; /* Add some space for the custom arrow */
+    background-color: white; /* Set background color */
+}
+
+select:focus{
+    outline: none;
+}
+
+
+.todo-container{
+    margin-top: 100px;
+}
+
+.todo-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.todo-item{
+    background-color: white;
+    color:black;
+    display: flex;
+    /* width: max-content; */
+    transition: all 0.5s ease;
+}
+
+.todo-item .todo-content{
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.todo-item .check-btn,
+.todo-item .trash-btn{
+    font-size: 1.5rem;
+    color:white;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.todo-item .check-btn{
+    background-color: rgb(32, 179, 32);
+}
+
+.todo-item .trash-btn{
+    background-color: red;
+}
+
+.fa-trash, .fa-check{
+    pointer-events: none;
+}
+
+
+.completed{
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.falling{
+    transform: translateY(8rem) rotateZ(20deg);
+    opacity: 0;
+}
+
+
+

@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", loadTodosFromLocalStorage)
 function addTodo(event){
   //Prevent browser from refresh when form is being submitted
   event.preventDefault()
+
+  //Prevent from submitting empty todo
+  if(inputTodo.value === "")return
   
   //Create todo container for paragraph, check button, and trash button
   const todoItem = document.createElement("li")
@@ -57,10 +60,13 @@ function deleteTodo(event){
   //Check if it is check button
   if(item.classList[0] === "check-btn"){
     const todo = item.parentElement
-    //Using toggle so when parent tag already has complete it will being removed
+    console.log(todo)
+    //Using toggle so when parent tag already has class completed it will being removed
     todo.classList.toggle("completed")
 
-    console.log(todo)
+    todo.children[0].setAttribute("completed", true)
+    //Change attribute completed: true at object todos
+    completeTodo(todo)
   }
 }
 
@@ -99,8 +105,11 @@ function saveLocalTodo(todo){
   //Create array that will store data from local storage
   let todos = getTodosFromLocalStorage()
 
+  //Create object
+  let todoObj = {todo: todo, completed: false}
+
   //Update todos array with todo that just being inserted from input tag
-  todos.push(todo)
+  todos.push(todoObj)
   //Create localstorage and save updated todos array inside local storage
   const STORAGE_KEY = "todos"
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
@@ -121,7 +130,7 @@ function loadTodosFromLocalStorage(){
     //Create paragraph 
     const todoContent = document.createElement("p")
     todoContent.classList.add("todo-content")
-    todoContent.innerText = todo
+    todoContent.innerText = todo.todo
     //Check and trash button
     const checkButton= document.createElement("button")
     checkButton.classList.add("check-btn")
@@ -132,6 +141,11 @@ function loadTodosFromLocalStorage(){
 
     todoItem.append(todoContent, checkButton, trashButton)
 
+    if(todo.completed === true){
+      todoItem.classList.add("completed")
+    }
+
+    //Show our DOM manipulation 
     const todoList = document.querySelector(".todo-list")
     todoList.appendChild(todoItem)
   })
@@ -144,11 +158,19 @@ function deleteLocalTodo(todo){
   let todos = getTodosFromLocalStorage()
   console.log(todos)
 
-  const todoIndex = todo.children[0].innerText
-  todos.splice(todos.indexOf(todoIndex),  1)
+  let updatedTodos = []
+
+  //The text as a target to delete
+  const todoText = todo.children[0].innerText
+  todos.forEach(function(item){
+    //push all item from todos to updatedTodos except for the one we want to delete
+    if(item.todo !== todoText){
+      updatedTodos.push(item)
+    }
+  })
 
   const STORAGE_KEY = "todos"
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTodos))
 }
 
 function isStorageExist(){
@@ -172,3 +194,30 @@ function getTodosFromLocalStorage(){
     return JSON.parse(localStorage.getItem(STORAGE_KEY))
   }
 }
+
+function completeTodo(todo) {
+  let todos = getTodosFromLocalStorage()
+
+  const todoText = todo.children[0].innerText;
+  const hasCompletedClass = todo.classList.contains("completed");
+  todos.forEach(function (innerTodo, index) {
+    if (innerTodo.todo === todoText) {
+      innerTodo.completed = hasCompletedClass;
+      todos[index] = innerTodo;
+    }
+  });
+
+  const STORAGE_KEY = "todos"
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+
+
+
+// todos = [{todo: "mandi", completed: true}, {todo: "tidur", completed: false}, {todo: "makan", completed: true}]
+// todos.forEach(function(innerTodo, index){
+//   console.log(innerTodo)
+//   console.log(index)
+// });
+
+//localStorage.clear()

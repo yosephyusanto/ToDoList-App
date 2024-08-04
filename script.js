@@ -106,7 +106,11 @@ function saveLocalTodo(todo){
   let todos = getTodosFromLocalStorage()
 
   //Create object
-  let todoObj = {todo: todo, completed: false}
+  let todoObj = {
+    id: new Date().getTime().toString(),
+    todo: todo, 
+    completed: false
+  }
 
   //Update todos array with todo that just being inserted from input tag
   todos.push(todoObj)
@@ -127,6 +131,8 @@ function loadTodosFromLocalStorage(){
     //Create todo container for paragraph, check button, and trash button
     const todoItem = document.createElement("li")
     todoItem.classList.add("todo-item")
+    //Add new attribute to make each todo item has unique id
+    todoItem.setAttribute("todo-id", todo.id)
     //Create paragraph 
     const todoContent = document.createElement("p")
     todoContent.classList.add("todo-content")
@@ -156,21 +162,14 @@ function deleteLocalTodo(todo){
   console.log(todo.children) //HTML Collection (<p>, <button>, <button>)
 
   let todos = getTodosFromLocalStorage()
-  console.log(todos)
 
-  let updatedTodos = []
-
-  //The text as a target to delete
-  const todoText = todo.children[0].innerText
-  todos.forEach(function(item){
-    //push all item from todos to updatedTodos except for the one we want to delete
-    if(item.todo !== todoText){
-      updatedTodos.push(item)
-    }
-  })
+  //todoId from todo element that is getting clicked
+  const todoId = todo.getAttribute("todo-id")
+  //Update todos wihtout object that has todoId as a value of key "id"
+  todos = todos.filter(item => item.id !== todoId)
 
   const STORAGE_KEY = "todos"
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTodos))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
 }
 
 function isStorageExist(){
@@ -198,12 +197,12 @@ function getTodosFromLocalStorage(){
 function completeTodo(todo) {
   let todos = getTodosFromLocalStorage()
 
-  const todoText = todo.children[0].innerText;
+  const todoId = todo.getAttribute("todo-id")
   const hasCompletedClass = todo.classList.contains("completed");
   todos.forEach(function (innerTodo, index) {
-    if (innerTodo.todo === todoText) {
+    if (innerTodo.id == todoId) {
       innerTodo.completed = hasCompletedClass;
-      todos[index] = innerTodo;
+      todos[index] = innerTodo
     }
   });
 

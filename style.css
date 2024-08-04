@@ -112,12 +112,15 @@ select:focus{
 
 .todo-container{
     margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .todo-list{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     row-gap: 1rem;
 }
 
@@ -129,6 +132,10 @@ select:focus{
     transition: all 0.5s ease;
 }
 
+.todo-content{
+    flex: 1;
+}
+
 .todo-item .todo-content{
     font-size: 1.5rem;
     padding: 0 0.5rem;
@@ -136,10 +143,10 @@ select:focus{
 
 .todo-item .check-btn,
 .todo-item .trash-btn{
-    font-size: 1.5rem;
+    font-size: 1rem;
     color:white;
     border: none;
-    padding: 0.5rem;
+    padding: 1rem;
     cursor: pointer;
 }
 

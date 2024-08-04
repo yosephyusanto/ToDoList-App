@@ -10,7 +10,6 @@ todoList.addEventListener("click", deleteTodo)
 todoFilter.addEventListener("click", filterTodo)
 document.addEventListener("DOMContentLoaded", loadTodosFromLocalStorage)
 
-
 //Functions
 function addTodo(event){
   //Prevent browser from refresh when form is being submitted
@@ -48,18 +47,20 @@ function deleteTodo(event){
 
   //Check if it is trash button
   if(item.classList[0] === "trash-btn"){
-    const parent = item.parentElement
-    parent.classList.add("falling")
-    parent.addEventListener("transitionend", ()=>{parent.remove()})
+    const todo = item.parentElement
+    todo.classList.add("falling")
+    //Remove todo from localstorage
+    deleteLocalTodo(todo)
+    todo.addEventListener("transitionend", ()=>{todo.remove()})
   }
 
   //Check if it is check button
   if(item.classList[0] === "check-btn"){
-    const parent = item.parentElement
+    const todo = item.parentElement
     //Using toggle so when parent tag already has complete it will being removed
-    parent.classList.toggle("completed")
+    todo.classList.toggle("completed")
 
-    console.log(parent)
+    console.log(todo)
   }
 }
 
@@ -95,23 +96,13 @@ function saveLocalTodo(todo){
   //Check if the browser has localstorage or not
   if(!isStorageExist())return
 
-  //Create array that will be store into localstorage
-  let todos;
+  //Create array that will store data from local storage
+  let todos = getTodosFromLocalStorage()
 
-  const STORAGE_KEY = "todos"
-  //Create empty array when there is no localstorage yet
-  if(localStorage.getItem(STORAGE_KEY) === null){
-    todos = []
-  }
-  else{
-    //Copy array from localstorage to array todos
-    todos = JSON.parse(localStorage.getItem(STORAGE_KEY))
-    console.log(localStorage.getItem(STORAGE_KEY))
-  }
-  
   //Update todos array with todo that just being inserted from input tag
   todos.push(todo)
   //Create localstorage and save updated todos array inside local storage
+  const STORAGE_KEY = "todos"
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
 }
 
@@ -119,19 +110,8 @@ function loadTodosFromLocalStorage(){
   //Check if browser has local storage
   if(!isStorageExist())return
 
-  //Create array that will be store into localstorage
-  let todos;
-
-  const STORAGE_KEY = "todos"
-  //Create empty array when there is no localstorage yet
-  if(localStorage.getItem(STORAGE_KEY) === null){
-    todos = []
-  }
-  else{
-    //Copy array from localstorage to array todos
-    todos = JSON.parse(localStorage.getItem(STORAGE_KEY))
-    console.log(localStorage.getItem(STORAGE_KEY))
-  }
+  //Create array that will store data from local storage
+  let todos = getTodosFromLocalStorage()
 
   //Render todolist for each item in todos array
   todos.forEach(function(todo){
@@ -157,8 +137,18 @@ function loadTodosFromLocalStorage(){
   })
 }
 
-function deleteLocalTodo(){
+function deleteLocalTodo(todo){
+  console.log(todo)//<li class="todo-item"></li>
+  console.log(todo.children) //HTML Collection (<p>, <button>, <button>)
 
+  let todos = getTodosFromLocalStorage()
+  console.log(todos)
+
+  const todoIndex = todo.children[0].innerText
+  todos.splice(todos.indexOf(todoIndex),  1)
+
+  const STORAGE_KEY = "todos"
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
 }
 
 function isStorageExist(){
@@ -166,5 +156,19 @@ function isStorageExist(){
   else {
     alert("Your browser doesn't support web storage")
     return false
+  }
+}
+
+function getTodosFromLocalStorage(){
+  const STORAGE_KEY = "todos"
+  //Return empty array when there is no localstorage yet
+  if(localStorage.getItem(STORAGE_KEY) === null){
+    return []
+  }
+  else{
+    //Check with console the string that being stored in local storage
+    console.log(localStorage.getItem(STORAGE_KEY))
+    //Return array from localstorage to array todos (convert string to JSON using parse)
+    return JSON.parse(localStorage.getItem(STORAGE_KEY))
   }
 }
